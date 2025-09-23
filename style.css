@@ -238,60 +238,7 @@ button.clicked {
   box-shadow: 0 0 15px rgba(154, 131, 255, 0.7);
 }
 
-/* وضع ليلي للزر */
-body.dark-mode button {
-  background-color: #00bcd4;
-  color: #000;
-}
 
-.result-box {
-  margin-top: 25px;
-  background-color: #e0f2f1;
-  border-radius: 8px;
-  padding: 15px 20px;
-  box-shadow: inset 0 0 10px #b2dfdb;
-}
-
-body.dark-mode .result-box {
-  background-color: #263238;
-  box-shadow: inset 0 0 10px #37474f;
-}
-
-footer {
-  text-align: center;
-  margin-top: 20px;
-  color: #999;
-}
-
-body.dark-mode footer {
-  color: #777;
-}
-
-/* زر الوضع الليلي */
-.toggle-theme {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.toggle-theme button {
-  background-color: #333;
-  color: #fff;
-  border: none;
-  padding: 10px 25px;
-  font-size: 1rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.toggle-theme button:hover {
-  background-color: #555;
-}
-
-body.dark-mode .toggle-theme button {
-  background-color: #ddd;
-  color: #000;
-}
 
 
 .logo-container {
@@ -310,9 +257,7 @@ body.dark-mode .toggle-theme button {
   transform: scale(1.1); /* تكبير بسيط عند التأشير */
 }
 
-body.dark-mode .logo {
-  filter: brightness(0.9) contrast(1.1);
-}
+
 .logo {
   width: 80px;
   height: 80px;
@@ -330,9 +275,7 @@ input::placeholder {
   opacity: 0.8;
 }
 
-body.dark-mode input::placeholder {
-  color: #ccc;
-}
+
 
 * {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
@@ -373,4 +316,190 @@ input[type="number"] {
   font-size: 1rem;
   padding: 0.75rem;
   border-radius: 8px;
+}
+/* تحديد عرض ثابت للمحتوى المركزي */
+.app {
+  max-width: 1100px;
+  margin: auto;
+  padding: 0 20px;
+}
+
+/* توسيط كل شيء بشكل أنيق */
+main.card {
+  max-width: 700px;
+  margin: auto;
+  padding: 2em;
+}
+
+/* ضبط حجم الكروت لتكون مثل تولف */
+.card, .result-box, .goal-card {
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* زر كبير وواضح */
+button {
+  padding: 1em;
+  font-size: 17px;
+  font-weight: bold;
+  border-radius: 12px;
+}
+
+/* الهوامش متوازنة */
+section {
+  margin-bottom: 60px;
+}
+/* الخط */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+
+:root {
+  --main-color: #00d09c;
+  --secondary-color: #16191c;
+  --text-color: #ffffff;
+  --card-bg: #1f2327;
+  --input-bg: #2a2f34;
+  --button-bg: #00d09c;
+  --button-text: #000;
+  --accent: #ff2f7d;
+  --transition: 0.3s ease;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Cairo', sans-serif;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+}
+
+header {
+  background-color: #121518;
+  padding: 1em 2em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 22px;
+  color: var(--main-color);
+}
+
+header p {
+  margin: 0;
+  font-size: 14px;
+  color: #bbb;
+}
+
+main {
+  padding: 2em;
+}
+
+.card {
+  background-color: var(--card-bg);
+  padding: 2em;
+  border-radius: 14px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  max-width: 600px;
+  margin: auto;
+}
+
+.card h2 {
+  font-size: 20px;
+  margin-bottom: 1em;
+  color: var(--main-color);
+}
+
+.form-group {
+  margin-bottom: 1.5em;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  padding: 0.8em;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--input-bg);
+  color: white;
+  font-size: 16px;
+}
+
+input:focus {
+  outline: 2px solid var(--main-color);
+}
+
+button {
+  width: 100%;
+  padding: 0.9em;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+button:hover {
+  background-color: var(--accent);
+  color: white;
+}
+
+.result-box {
+  margin-top: 2em;
+  background-color: var(--input-bg);
+  padding: 1.5em;
+  border-radius: 10px;
+}
+
+.result-box h3 {
+  color: var(--main-color);
+  margin-bottom: 1em;
+}
+
+footer {
+  text-align: center;
+  padding: 2em;
+  font-size: 14px;
+  background-color: #121518;
+  margin-top: 3em;
+  color: #aaa;
+}
+
+.toggle-theme {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+}
+
+.toggle-theme button {
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  border: 1px solid var(--main-color);
+  padding: 0.5em 1em;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  main {
+    padding: 1em;
+  }
+
+  .card {
+    padding: 1.5em;
+  }
 }
