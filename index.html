@@ -1,21 +1,22 @@
 <!DOCTYPE html>
-
 <html lang="ar" dir="rtl">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="53780d7842d73954e2ebf61205f44558e4171e2b" content="53780d7842d73954e2ebf61205f44558e4171e2b" />
-   <link rel="icon" type="image/png" href="logo.png-removebg-preview.png" />
+  <link rel="icon" type="image/png" href="logo.png-removebg-preview.png" />
   <title>حاسبة الاستثمار الذكية</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
   <div class="app">
     <header>
-      <h1>📈 حاسبة الاستثمار</h1>
+      <div class="logo-container">
+        <img src="logo.png-removebg-preview.png" alt="شعار الموقع" class="logo" />
+        <h1>📈 حاسبة الاستثمار</h1>
+      </div>
       <p>احسب استثماراتك وانت مرتاح</p>
     </header>
 
@@ -26,14 +27,11 @@
         <label>المبلغ الأساسي (ر.س)</label>
         <input type="number" id="initial" placeholder="مثال: 10000" />
       </div>
-<div class="form-group">
- 
-</div>
 
       <div class="form-group">
-  <label>💸 الضخ الشهري (ر.س)</label>
-  <input type="number" id="monthly" placeholder="مثال: 500" />
-</div>
+        <label>💸 الضخ الشهري (ر.س)</label>
+        <input type="number" id="monthly" placeholder="مثال: 500" />
+      </div>
 
       <div class="form-group">
         <label>معدل العائد السنوي (%)</label>
@@ -50,143 +48,149 @@
       <div class="result" id="result"></div>
     </main>
 
-<header>
-  <div class="logo-container">
-    <img src="logo.png-removebg-preview.png" alt="شعار الموقع" class="logo" />
-    <h1>حاسبة الاستثمار</h1>
-  </div>
-  
-</header>
-
-<header>
- 
-
-
     <footer>
       <p>© Nv جميع الحقوق محفوظة</p>
     </footer>
+
+    <div class="toggle-theme">
+      <button onclick="toggleTheme()"> تبديل الوضع الليلي</button>
+    </div>
   </div>
 
-<div class="toggle-theme">
-  <button onclick="toggleTheme()"> تبديل الوضع الليلي</button>
-</div>
+  <script>
+    let chartInstance;
 
- <script>
-  let chartInstance;
+    function calculate() {
+      const btn = document.querySelector("button");
+      btn.classList.add("clicked");
 
-  function calculate() {
-    const btn = document.querySelector("button");
-    btn.classList.add("clicked");
+      setTimeout(() => btn.classList.remove("clicked"), 800);
 
-    setTimeout(() => btn.classList.remove("clicked"), 800);
+      const initial = parseFloat(document.getElementById("initial").value);
+      const rate = parseFloat(document.getElementById("rate").value) / 100;
+      const years = parseInt(document.getElementById("years").value);
+      const monthly = parseFloat(document.getElementById("monthly")?.value) || 0;
 
-    const initial = parseFloat(document.getElementById("initial").value);
-    const rate = parseFloat(document.getElementById("rate").value) / 100;
-    const years = parseInt(document.getElementById("years").value);
-    const monthly = parseFloat(document.getElementById("monthly")?.value) || 0;
+      if (isNaN(initial) || isNaN(rate) || isNaN(years)) {
+        document.getElementById("result").innerHTML = "<p class='error'>⚠️ أدخل كل البيانات بشكل صحيح.</p>";
+        return;
+      }
 
-    if (isNaN(initial) || isNaN(rate) || isNaN(years)) {
-      document.getElementById("result").innerHTML = "<p class='error'>⚠️ أدخل كل البيانات بشكل صحيح.</p>";
-      return;
-    }
+      let data = [];
+      let injectedData = [];
+      let labels = [];
+      let future = initial;
 
-    let data = [];
-    let injectedData = [];
-    let labels = [];
-    let future = initial;
+      for (let i = 1; i <= years; i++) {
+        future = (future + monthly * 12) * (1 + rate);
+        data.push(future.toFixed(2));
+        labels.push(`سنة ${i}`);
+        injectedData.push(initial + monthly * 12 * i);
+      }
 
-    for (let i = 1; i <= years; i++) {
-      future = (future + monthly * 12) * (1 + rate);
-      data.push(future.toFixed(2));
-      labels.push(`سنة ${i}`);
-      injectedData.push(initial + monthly * 12 * i);
-    }
+      const totalInvested = initial + (monthly * 12 * years);
+      const profit = future - totalInvested;
 
-    const totalInvested = initial + (monthly * 12 * years);
-    const profit = future - totalInvested;
+      document.getElementById("result").innerHTML = `
+        <div class="result-box">
+          <h3>📈 النتيجة</h3>
+          <p>💰 القيمة المستقبلية: <strong>${future.toFixed(2)} ر.س</strong></p>
+          <p>💸 الأرباح: <strong>${profit.toFixed(2)} ر.س</strong></p>
+          <p>💼 إجمالي المبلغ المضخوخ: <strong>${(monthly * 12 * years).toFixed(2)} ر.س</strong></p>
+          <canvas id="investmentChart" width="400" height="200"></canvas>
+        </div>
+      `;
 
-    document.getElementById("result").innerHTML = `
-      <div class="result-box">
-        <h3>📈 النتيجة</h3>
-        <p>💰 القيمة المستقبلية: <strong>${future.toFixed(2)} ر.س</strong></p>
-        <p>💸 الأرباح: <strong>${profit.toFixed(2)} ر.س</strong></p>
-        <p>💼 إجمالي المبلغ المضخوخ: <strong>${(monthly * 12 * years).toFixed(2)} ر.س</strong></p>
-        <canvas id="investmentChart" width="400" height="200"></canvas>
-      </div>
-    `;
+      const ctx = document.getElementById("investmentChart").getContext("2d");
 
-    const ctx = document.getElementById("investmentChart").getContext("2d");
+      if (chartInstance) {
+        chartInstance.destroy();
+      }
 
-    if (chartInstance) {
-      chartInstance.destroy();
-    }
-
-    chartInstance = new Chart(ctx, {
-      type: "line",
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: "نمو الاستثمار",
-            data: data,
-            backgroundColor: "rgba(0, 188, 212, 0.2)",
-            borderColor: "#00acc1",
-            borderWidth: 3,
-            pointBackgroundColor: "#00796b",
-            tension: 0.4,
-            fill: true,
-          },
-          {
-            label: "إجمالي المبلغ المضخوخ",
-            data: injectedData,
-            borderColor: "#ff9800",
-            borderWidth: 2,
-            borderDash: [5, 5],
-            pointBackgroundColor: "#ff9800",
-            fill: false,
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            display: true,
-            labels: {
-              font: {
-                family: 'Cairo',
-                size: 14,
+      chartInstance = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "نمو الاستثمار",
+              data: data,
+              backgroundColor: "rgba(0, 188, 212, 0.2)",
+              borderColor: "#00acc1",
+              borderWidth: 3,
+              pointBackgroundColor: "#00796b",
+              tension: 0.4,
+              fill: true,
+            },
+            {
+              label: "إجمالي المبلغ المضخوخ",
+              data: injectedData,
+              borderColor: "#ff9800",
+              borderWidth: 2,
+              borderDash: [5, 5],
+              pointBackgroundColor: "#ff9800",
+              fill: false,
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              display: true,
+              labels: {
+                font: {
+                  family: 'Cairo',
+                  size: 14,
+                }
               }
             }
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: {
-              callback: function(value) {
-                return value + ' ر.س';
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: function(value) {
+                  return value + ' ر.س';
+                }
               }
             }
           }
         }
-      }
-    });
-  }
+      });
+    }
 
-  function toggleTheme() {
-    document.body.classList.toggle("dark-mode");
-  }
-</script>
-<script>
-(function(qhrr){
-var d = document,
-    s = d.createElement('script'),
-    l = d.scripts[d.scripts.length - 1];
-s.settings = qhrr || {};
-s.src = "\/\/fitting-candle.com\/cjDq9.6wb\/2Q5\/loSMWoQZ9\/NdjjYn1rO\/DAQT4aN\/SR0\/2VNNjUUo4_NxD_ge2S";
-s.async = true;
-s.referrerPolicy = 'no-referrer-when-downgrade';
-l.parentNode.insertBefore(s, l);
-})({})
-</script>
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+    }
+  </script>
+
+  <!-- كود إعلان Hilltopads -->
+  <script>
+    (function(nroy){
+      var d = document,
+          s = d.createElement('script'),
+          l = d.scripts[d.scripts.length - 1];
+      s.settings = nroy || {};
+      s.src = "//fitting-candle.com/caD.9v6_bO2/5blaSOWDQh9-NkjmYV1/OiDmQ-4dNWSn0S2qNjjNU/4LNhDkgX2I";
+      s.async = true;
+      s.referrerPolicy = 'no-referrer-when-downgrade';
+      l.parentNode.insertBefore(s, l);
+    })({})
+  </script>
+
+  <script>
+    (function(itaa){
+      var d = document,
+          s = d.createElement('script'),
+          l = d.scripts[d.scripts.length - 1];
+      s.settings = itaa || {};
+      s.src = "//beneficial-shape.com/bjX.Vvs_dsG/lH0/YtWrcK/beImE9guxZoUwlvk/PETsY/2/NhTWg/0dOADHcetHNjjlY/1_O/DXQ/4WOxAZ";
+      s.async = true;
+      s.referrerPolicy = 'no-referrer-when-downgrade';
+      l.parentNode.insertBefore(s, l);
+    })({})
+  </script>
+
+</body>
+</html>
