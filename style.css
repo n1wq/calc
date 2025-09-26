@@ -493,7 +493,7 @@ footer {
   cursor: pointer;
 }
 
-/* Responsive */
+/* Responsive */  
 @media (max-width: 600px) {
   main {
     padding: 1em;
